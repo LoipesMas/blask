@@ -1,6 +1,6 @@
 import blask/internals/utils.{scl}
 import blask/unstyled/select.{type SelectState, select as unstyled_select}
-import gleroglero/mini
+import gleroglero/solid
 import lustre/element
 import lustre/element/html
 import sketch as s
@@ -93,7 +93,7 @@ pub fn select(
     main_button: fn(option) {
       html.button([select_button_main_class()], [
         html.text(option_to_str(option)),
-        html.span([icon_class(), ..rotate_class], [mini.chevron_down()]),
+        html.span([icon_class(), ..rotate_class], [solid.chevron_down()]),
       ])
     },
     list_button: fn(option) {
