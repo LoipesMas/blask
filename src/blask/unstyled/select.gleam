@@ -26,7 +26,7 @@ pub fn select(
   on_state_change state_change: fn(SelectState(option_type)) -> msg,
   main_button main_button: fn(option_type) -> Element(msg),
   list_button list_button: fn(option_type) -> Element(msg),
-  list_attrs list_attrs: List(attribute.Attribute(msg)),
+  list list_element: fn(List(Element(msg))) -> Element(msg),
 ) -> Element(msg) {
   html.div([], [
     html.div(
@@ -36,7 +36,7 @@ pub fn select(
       ],
       [main_button(state.current_option)],
     ),
-    selection_list(state, state_change, list_button, list_attrs),
+    selection_list(state, state_change, list_button, list_element),
   ])
 }
 
@@ -49,19 +49,20 @@ fn selection_list(
   state: SelectState(option_type),
   state_change: fn(SelectState(option_type)) -> msg,
   list_button: fn(option_type) -> Element(msg),
-  list_attrs: List(attribute.Attribute(msg)),
+  list_element: fn(List(Element(msg))) -> Element(msg),
 ) -> Element(msg) {
-  html.div(
-    [selection_list_class()] |> list.append(list_attrs, _),
-    list.map(state.options, fn(o) {
-      html.div(
-        [
-          event.on_click(state_change(
-            SelectState(..state, open: !state.open, current_option: o),
-          )),
-        ],
-        [list_button(o)],
-      )
-    }),
-  )
+  html.div([selection_list_class()], [
+    list_element(
+      list.map(state.options, fn(o) {
+        html.div(
+          [
+            event.on_click(state_change(
+              SelectState(..state, open: !state.open, current_option: o),
+            )),
+          ],
+          [list_button(o)],
+        )
+      }),
+    ),
+  ])
 }

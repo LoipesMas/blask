@@ -101,6 +101,9 @@ pub fn select(
         html.text(option_to_str(option)),
       ])
     },
-    list_attrs: [select_list_class(), selection_list_class_anim(state.open)],
+    list: html.div(
+      [select_list_class(), selection_list_class_anim(state.open)],
+      _,
+    ),
   )
 }
