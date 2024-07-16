@@ -1,5 +1,5 @@
 import blask/internals/utils.{scl}
-import blask/unstyled/select.{select as unstyled_select}
+import blask/unstyled/select.{type SelectState, select as unstyled_select}
 import gleroglero/mini
 import lustre/element
 import lustre/element/html
@@ -57,12 +57,11 @@ fn select_list_class() {
 }
 
 fn selection_list_class_anim(open: Bool) {
-case open {
+  case open {
     True -> [s.opacity(1.0), s.max_height_("50vh")] |> scl
     False -> [s.opacity(0.0), s.max_height_("0vh")] |> scl
-    }
+  }
 }
-
 
 fn icon_class() {
   [
@@ -80,23 +79,17 @@ fn rotate180() {
 }
 
 pub fn select(
-  open open: Bool,
-  current current_option: option_type,
-  options options: List(option_type),
-  on_toggle toggle_open: fn(Bool) -> a,
-  on_select on_select: fn(option_type) -> a,
+  state state: SelectState(option_type),
+  on_state_change on_state_change: fn(SelectState(option_type)) -> msg,
   display option_to_str: fn(option_type) -> String,
-) -> element.Element(a) {
-  let rotate_class = case open {
+) -> element.Element(msg) {
+  let rotate_class = case state.open {
     True -> [rotate180()]
     False -> []
   }
   unstyled_select(
-    open: open,
-    current: current_option,
-    options: options,
-    on_toggle: toggle_open,
-    on_select: on_select,
+    state: state,
+    on_state_change: on_state_change,
     main_button: fn(option) {
       html.button([select_button_main_class()], [
         html.text(option_to_str(option)),
@@ -108,6 +101,6 @@ pub fn select(
         html.text(option_to_str(option)),
       ])
     },
-    list_attrs: [select_list_class(), selection_list_class_anim(open)],
+    list_attrs: [select_list_class(), selection_list_class_anim(state.open)],
   )
 }
