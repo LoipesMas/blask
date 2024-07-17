@@ -51,7 +51,7 @@ fn select_list_class() {
     s.border("1px solid #ddd"),
     s.border_radius_("0.5rem"),
     s.overflow("scroll"),
-    s.transition("opacity 0.5s ease-in-out, max-height 0.4s ease-in-out"),
+    s.transition("opacity 0.4s ease-in-out, max-height 0.4s ease-in-out"),
   ]
   |> scl
 }
@@ -68,7 +68,7 @@ fn icon_class() {
     s.display("block"),
     s.width_("20px"),
     s.height_("20px"),
-    s.transition("transform 0.3s ease-in-out"),
+    s.transition("transform 0.3s ease-out"),
   ]
   |> scl
 }
