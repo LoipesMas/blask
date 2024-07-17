@@ -1,6 +1,7 @@
 import blask/internals/utils.{scl}
 import gleam/list
 import gleam/option
+import lustre/attribute
 import lustre/element.{type Element}
 import lustre/element/html
 import lustre/event
@@ -15,13 +16,14 @@ pub fn init_state() {
 }
 
 pub type AccordionItem(msg) =
-  #(Element(msg), Element(msg))
+  fn(Bool, List(attribute.Attribute(msg))) -> #(Element(msg), Element(msg))
 
 pub fn accordion(
   state state: AccordionState,
   on_state_change change_state: fn(AccordionState) -> msg,
   items items: List(AccordionItem(msg)),
   item_holder item_holder: fn(List(Element(msg))) -> Element(msg),
+  separator separator: Element(msg),
 ) -> Element(msg) {
   html.div([], {
     {
@@ -40,8 +42,7 @@ pub fn accordion(
         item_holder: item_holder,
       )
     }
-    // TODO: this shouldn't be in the unstyled version
-    |> list.intersperse(html.hr([scl([s.margin_("0")])]))
+    |> list.intersperse(separator)
   })
 }
 
@@ -62,9 +63,10 @@ fn view_item(
   item item: AccordionItem(msg),
   item_holder item_holder: fn(List(Element(msg))) -> Element(msg),
 ) -> Element(msg) {
-  let #(head, body) = item
+  let body_attrs = [body_class(), body_class_anim(open)]
+  let #(head, body) = item(open, body_attrs)
   item_holder([
     html.div([event.on_click(change_state), scl([s.cursor("pointer")])], [head]),
-    html.div([body_class(), body_class_anim(open)], [body]),
+    body,
   ])
 }
