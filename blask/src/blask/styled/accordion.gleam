@@ -69,7 +69,7 @@ fn body_class() {
 
 fn body_class_anim(open: Bool) {
   case open {
-    True -> [s.max_height_("100vh"), s.overflow("scroll")] |> scl
+    True -> [s.max_height_("100vh"), s.overflow("auto")] |> scl
     False -> [s.max_height_("0"), s.overflow("clip")] |> scl
   }
 }

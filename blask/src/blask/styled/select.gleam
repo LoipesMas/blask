@@ -57,7 +57,7 @@ fn select_list_class() {
     s.background("#131313"),
     s.border("1px solid #ddd"),
     s.border_radius_("0.5rem"),
-    s.overflow("scroll"),
+    s.overflow("hidden"),
     s.transition("opacity 0.4s ease-in-out, max-height 0.4s ease-in-out"),
   ]
   |> scl
