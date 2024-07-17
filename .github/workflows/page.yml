@@ -16,6 +16,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./blask
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,19 +32,20 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Downloading dependencies
-        working_dir: blask
+        working-directory: blask
+
         run: gleam deps download
       - name: Build demo
-        working_dir: blask
+        working-directory: blask
         run: gleam run -m lustre/dev build
       - name: Copy files
-        working_dir: blask
+        working-directory: blask
         run: |
           mkdir _site
           cp -r priv _site
           cp index.html _site
       - name: Upload artifacts
-        working_dir: blask
+        working-directory: blask
         uses: actions/upload-pages-artifact@v3
 
   deploy:
