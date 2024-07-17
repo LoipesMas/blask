@@ -24,20 +24,24 @@ pub fn accordion(
   item_holder item_holder: fn(List(Element(msg))) -> Element(msg),
 ) -> Element(msg) {
   html.div([], {
-    use item, idx <- list.index_map(items)
-    let open =
-      option.map(state.opened_item_idx, fn(o) { o == idx })
-      |> option.unwrap(or: False)
-    let new_state = case open {
-      True -> AccordionState(option.None)
-      False -> AccordionState(option.Some(idx))
+    {
+      use item, idx <- list.index_map(items)
+      let open =
+        option.map(state.opened_item_idx, fn(o) { o == idx })
+        |> option.unwrap(or: False)
+      let new_state = case open {
+        True -> AccordionState(option.None)
+        False -> AccordionState(option.Some(idx))
+      }
+      view_item(
+        open: open,
+        change_state: change_state(new_state),
+        item: item,
+        item_holder: item_holder,
+      )
     }
-    view_item(
-      open: open,
-      change_state: change_state(new_state),
-      item: item,
-      item_holder: item_holder,
-    )
+    // TODO: this shouldn't be in the unstyled version
+    |> list.intersperse(html.hr([scl([s.margin_("0")])]))
   })
 }
 
