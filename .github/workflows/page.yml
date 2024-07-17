@@ -29,20 +29,17 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Downloading dependencies
-        working-directory: blask
-
         run: gleam deps download
+        working-directory: blask_demo
       - name: Build demo
-        working-directory: blask
         run: gleam run -m lustre/dev build
+        working-directory: blask_demo
       - name: Copy files
-        working-directory: blask
         run: |
           mkdir _site
-          cp -r priv _site
-          cp index.html _site
+          cp -r blask_demo/priv _site
+          cp blask_demo/index.html _site
       - name: Upload artifacts
-        working-directory: blask
         uses: actions/upload-pages-artifact@v3
 
   deploy:
