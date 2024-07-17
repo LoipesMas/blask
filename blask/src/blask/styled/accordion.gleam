@@ -48,6 +48,7 @@ fn accordion_class() {
 fn head_class() {
   [
     s.font_size_("1.2em"),
+    s.font_weight("500"),
     s.padding_("0.3rem 0.6rem"),
     s.margin_("0.1rem"),
     s.border_radius_("0.5rem"),
