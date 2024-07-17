@@ -2,7 +2,7 @@ name: Deploy page
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 permissions:
   contents: read
