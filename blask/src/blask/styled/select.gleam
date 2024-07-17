@@ -1,10 +1,17 @@
 import blask/internals/utils.{scl}
-import blask/unstyled/select.{type SelectState, select as unstyled_select}
+import blask/unstyled/select.{
+  type SelectState as USelectState, select as unstyled_select,
+}
 import gleroglero/solid
 import lustre/element
 import lustre/element/html
 import sketch as s
 import sketch/size
+
+pub type SelectState(o) =
+  USelectState(o)
+
+pub const init_state = select.init_state
 
 fn select_button_main_class() {
   [

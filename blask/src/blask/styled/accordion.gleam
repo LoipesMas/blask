@@ -1,7 +1,7 @@
 import blask/internals/utils.{scl}
 import blask/unstyled/accordion.{
-  type AccordionItem as UnstyledAccordionItem, type AccordionState,
-  accordion as unstyled_accordion,
+  type AccordionItem as UnstyledAccordionItem,
+  type AccordionState as UAccordionState, accordion as unstyled_accordion,
 }
 import gleam/function
 import gleam/list
@@ -9,7 +9,11 @@ import gleroglero/solid
 import lustre/element.{type Element}
 import lustre/element/html
 import sketch as s
-import sketch/size
+
+pub type AccordionState =
+  UAccordionState
+
+pub const init_state = accordion.init_state
 
 pub type AccordionItem(msg) =
   #(String, Element(msg))

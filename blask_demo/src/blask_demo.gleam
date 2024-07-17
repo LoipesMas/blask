@@ -1,15 +1,8 @@
-import blask/styled/accordion as styled_accordion
-import blask/styled/select as styled_select
-import blask/unstyled/accordion.{type AccordionState, AccordionState}
-import blask/unstyled/select.{type SelectState}
-import gleam/string
-import gleroglero/mini
-import gleroglero/solid
+import blask/styled/accordion.{type AccordionState, accordion}
+import blask/styled/select.{type SelectState, select}
 import lustre
-import lustre/attribute.{attribute}
-import lustre/element.{element}
+import lustre/element
 import lustre/element/html
-import lustre/element/svg
 import sketch as s
 import sketch/lustre as sketch_lustre
 import sketch/options as sketch_options
@@ -104,14 +97,14 @@ fn view(model: Model) -> element.Element(Msg) {
           ],
           [html.text("Your favourite language: ")],
         ),
-        styled_select.select(
+        select(
           state: model.language_select_state,
           on_state_change: LanguageSelectStateChange,
           display: language_to_str,
         ),
       ]),
       html.div([], [
-        styled_accordion.accordion(
+        accordion(
           state: model.accordion_state,
           on_state_change: AccordionStateChange,
           items: [
