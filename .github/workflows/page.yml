@@ -1,0 +1,56 @@
+name: Deploy page
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup BEAM
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: "26.0.2"
+          gleam-version: "1.3.2"
+          rebar3-version: "3"
+          # elixir-version: "1.15.4"
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Downloading dependencies
+        working_dir: blask
+        run: gleam deps download
+      - name: Build demo
+        working_dir: blask
+        run: gleam run -m lustre/dev build
+      - name: Copy files
+        working_dir: blask
+        run: |
+          mkdir _site
+          cp -r priv _site
+          cp index.html _site
+      - name: Upload artifacts
+        working_dir: blask
+        uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
