@@ -58,15 +58,14 @@ fn select_list_class() {
     s.border("1px solid #ddd"),
     s.border_radius_("0.5rem"),
     s.overflow("hidden"),
-    s.transition("opacity 0.4s ease-in-out, max-height 0.4s ease-in-out"),
   ]
   |> scl
 }
 
 fn selection_list_class_anim(open: Bool) {
   case open {
-    True -> [s.opacity(1.0), s.max_height_("50vh")] |> scl
-    False -> [s.opacity(0.0), s.max_height_("0vh")] |> scl
+    True -> [s.display("block"), s.animation("fade-in 0.4s ease-in forwards;")] |> scl
+    False -> [s.display("none"),s.animation("fade-out 0.4s ease-out forwards")] |> scl
   }
 }
 

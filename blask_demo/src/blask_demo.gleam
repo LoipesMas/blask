@@ -1,5 +1,6 @@
 import blask/styled/accordion.{type AccordionState, accordion}
 import blask/styled/select.{type SelectState, select}
+import blask/styled/style
 import lustre
 import lustre/element
 import lustre/element/html
@@ -75,6 +76,7 @@ fn view(model: Model) -> element.Element(Msg) {
       ]),
     ],
     [
+      style.blask_style(),
       html.h1(
         [
           scl([

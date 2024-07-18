@@ -28,7 +28,7 @@ pub fn accordion(
       state: state,
       on_state_change: on_state_change,
       items: list.map(items, convert_item),
-      item_holder: html.div([], _),
+      item_holder: html.div([scl([s.margin_("0.1rem")])], _),
       separator: html.hr([scl([s.margin_("0")])]),
     ),
   ])
@@ -38,8 +38,7 @@ fn accordion_class() {
   [
     s.border_radius_("0.5rem"),
     s.border("2px solid #909092"),
-    s.min_width_("300px"),
-    s.max_width_("500px"),
+    s.width_("500px"),
     s.background("#151515"),
   ]
   |> scl
@@ -52,7 +51,9 @@ fn head_class() {
     s.padding_("0.3rem 0.6rem"),
     s.margin_("0.1rem"),
     s.border_radius_("0.5rem"),
+    s.border("none"),
     s.display("flex"),
+    s.width_("100%"),
     s.flex_direction("row"),
     s.justify_content("space-between"),
     s.background("#191919"),
@@ -69,8 +70,8 @@ fn body_class() {
 
 fn body_class_anim(open: Bool) {
   case open {
-    True -> [s.max_height_("100vh"), s.overflow("auto")] |> scl
-    False -> [s.max_height_("0"), s.overflow("clip")] |> scl
+    True -> [s.display("block"), s.animation("fade-in 0.3s ease-in forwards;")] |> scl
+    False -> [s.display("none"),s.animation("fade-out 0.3s ease-out forwards")] |> scl
   }
 }
 
@@ -99,7 +100,7 @@ fn convert_item(styled_item: AccordionItem(msg)) -> UnstyledAccordionItem(msg) {
   use open, _body_attrs <- function.identity
   let #(head_text, inner_body) = styled_item
   let head =
-    html.div([head_class()], [
+    html.button([head_class()], [
       html.text(head_text),
       html.span([icon_class(), icon_class_anim(open)], [solid.chevron_down()]),
     ])
