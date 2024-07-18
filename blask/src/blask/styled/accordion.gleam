@@ -1,4 +1,4 @@
-import blask/internals/utils.{scl}
+import blask/internals/utils.{scl, scld}
 import blask/unstyled/accordion.{
   type AccordionItem as UnstyledAccordionItem,
   type AccordionState as UAccordionState, accordion as unstyled_accordion,
@@ -41,7 +41,7 @@ fn accordion_class() {
     s.width_("500px"),
     s.background("#151515"),
   ]
-  |> scl
+  |> scld("styled-accordion-main")
 }
 
 fn head_class() {
@@ -60,21 +60,22 @@ fn head_class() {
     s.hover([s.background("#252525")]),
     s.color("#eeeeee"),
   ]
-  |> scl
+  |> scld("styled-accordion-head")
 }
 
 fn body_class() {
   [s.padding_("0.6rem 0.8rem"), s.color("#ddd")]
-  |> scl
+  |> scld("styled-accordion-body")
 }
 
-fn body_class_anim(open: Bool) {
-  case open {
-    True ->
-      [s.display("block"), s.animation("fade-in 0.3s ease-in forwards;")] |> scl
-    False ->
-      [s.display("none"), s.animation("fade-out 0.3s ease-out forwards")] |> scl
-  }
+fn body_class_open() {
+  [s.display("block"), s.animation("fade-in 0.3s ease-in forwards;")]
+  |> scld("styled-accordion-body-open")
+}
+
+fn body_class_closed() {
+  [s.display("none"), s.animation("fade-out 0.3s ease-out forwards")]
+  |> scld("styled-accordion-body-closed")
 }
 
 fn icon_class() {
@@ -86,20 +87,24 @@ fn icon_class() {
     s.property("stroke", "#eee"),
     s.property("stroke-width", "1px"),
   ]
-  |> scl
+  |> scld("styled-accordion-icon")
 }
 
 fn icon_class_anim(open: Bool) {
   case open {
     True ->
       [s.transform("rotate(0.5turn)")]
-      |> scl
-    False -> [] |> scl
+      |> scld("styled-accordion-icon-open")
+    False -> [] |> scld("styled-accordion-icon-closed")
   }
 }
 
 fn convert_item(styled_item: AccordionItem(msg)) -> UnstyledAccordionItem(msg) {
   use open, _body_attrs <- function.identity
+  let body_class_anim = case open {
+    True -> body_class_open()
+    False -> body_class_closed()
+  }
   let #(head_text, inner_body) = styled_item
   let head =
     html.button([head_class()], [
@@ -107,6 +112,6 @@ fn convert_item(styled_item: AccordionItem(msg)) -> UnstyledAccordionItem(msg) {
       html.span([icon_class(), icon_class_anim(open)], [solid.chevron_down()]),
     ])
   let body =
-    html.div([body_class_anim(open)], [html.div([body_class()], [inner_body])])
+    html.div([body_class_anim], [html.div([body_class()], [inner_body])])
   #(head, body)
 }

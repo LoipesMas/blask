@@ -1,4 +1,4 @@
-import blask/internals/utils.{scl}
+import blask/internals/utils.{scl, scld}
 import gleam/list
 import lustre/element.{type Element}
 import lustre/element/html
@@ -40,8 +40,13 @@ pub fn select(
 }
 
 fn selection_list_class() {
-  [s.display("flex"), s.flex_direction("column"), s.position("absolute")]
-  |> scl
+  [
+    s.display("flex"),
+    s.flex_direction("column"),
+    s.position("absolute"),
+    s.z_index(10),
+  ]
+  |> scld("selection_list")
 }
 
 fn selection_list(

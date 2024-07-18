@@ -23,10 +23,6 @@ pub fn blask_style() {
     display: block;
   }
 
-  99% {
-    opacity: 0;
-  }
-
   100% {
     opacity: 0;
     display: none;

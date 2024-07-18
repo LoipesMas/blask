@@ -1,4 +1,4 @@
-import blask/internals/utils.{scl}
+import blask/internals/utils.{scl, scld}
 import blask/unstyled/select.{
   type SelectState as USelectState, select as unstyled_select,
 }
@@ -31,7 +31,7 @@ fn select_button_main_class() {
     s.display("flex"),
     s.justify_content("space-between"),
   ]
-  |> scl
+  |> scld("unstyled_select_button_main_class")
 }
 
 fn select_button_list_class() {
@@ -46,7 +46,7 @@ fn select_button_list_class() {
     s.color("#eee"),
     s.hover([s.cursor("pointer"), s.background("#333")]),
   ]
-  |> scl
+  |> scld("unstyled_select_button_list_class")
 }
 
 fn select_list_class() {
@@ -59,16 +59,17 @@ fn select_list_class() {
     s.border_radius_("0.5rem"),
     s.overflow("hidden"),
   ]
-  |> scl
+  |> scld("unstyled_select_list_class")
 }
 
-fn selection_list_class_anim(open: Bool) {
-  case open {
-    True ->
-      [s.display("block"), s.animation("fade-in 0.4s ease-in forwards;")] |> scl
-    False ->
-      [s.display("none"), s.animation("fade-out 0.4s ease-out forwards")] |> scl
-  }
+fn slca_open() {
+  [s.display("block"), s.animation("fade-in 0.4s ease-in forwards;")]
+  |> scld("slca_open")
+}
+
+fn slca_closed() {
+  [s.display("none"), s.animation("fade-out 0.4s ease-out forwards")]
+  |> scld("slca_closed")
 }
 
 fn icon_class() {
@@ -78,12 +79,12 @@ fn icon_class() {
     s.height_("20px"),
     s.transition("transform 0.3s ease-out"),
   ]
-  |> scl
+  |> scld("unstyled_select_icon")
 }
 
 fn rotate180() {
   [s.transform("rotate(0.5turn)")]
-  |> scl
+  |> scld("unstyled_select_icon_open")
 }
 
 pub fn select(
@@ -94,6 +95,10 @@ pub fn select(
   let rotate_class = case state.open {
     True -> [rotate180()]
     False -> []
+  }
+  let slca = case state.open {
+    True -> [slca_open()]
+    False -> [slca_closed()]
   }
   unstyled_select(
     state: state,
@@ -109,9 +114,6 @@ pub fn select(
         html.text(option_to_str(option)),
       ])
     },
-    list: html.div(
-      [select_list_class(), selection_list_class_anim(state.open)],
-      _,
-    ),
+    list: html.div([select_list_class(), ..slca], _),
   )
 }

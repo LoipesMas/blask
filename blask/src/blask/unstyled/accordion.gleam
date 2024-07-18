@@ -1,4 +1,4 @@
-import blask/internals/utils.{scl}
+import blask/internals/utils.{scl, scld}
 import gleam/list
 import gleam/option
 import lustre/attribute
@@ -47,14 +47,15 @@ pub fn accordion(
 }
 
 fn body_class() {
-  [] |> scl
+  [] |> scld("accordion-body")
 }
 
-fn body_class_anim(open: Bool) {
-  case open {
-    True -> [s.overflow("auto")] |> scl
-    False -> [s.max_height_("0"), s.overflow("clip")] |> scl
-  }
+fn body_class_open() {
+  [s.overflow("auto")] |> scld("accordion-body-open")
+}
+
+fn body_class_closed() {
+  [s.max_height_("0"), s.overflow("clip")] |> scld("accordion-body-closed")
 }
 
 fn view_item(
@@ -63,7 +64,11 @@ fn view_item(
   item item: AccordionItem(msg),
   item_holder item_holder: fn(List(Element(msg))) -> Element(msg),
 ) -> Element(msg) {
-  let body_attrs = [body_class(), body_class_anim(open)]
+  let body_class_animed = case open {
+    True -> body_class_open()
+    False -> body_class_closed()
+  }
+  let body_attrs = [body_class(), body_class_animed]
   let #(head, body) = item(open, body_attrs)
   item_holder([
     html.div([event.on_click(change_state), scl([s.cursor("pointer")])], [head]),
