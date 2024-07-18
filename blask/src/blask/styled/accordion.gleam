@@ -70,8 +70,10 @@ fn body_class() {
 
 fn body_class_anim(open: Bool) {
   case open {
-    True -> [s.display("block"), s.animation("fade-in 0.3s ease-in forwards;")] |> scl
-    False -> [s.display("none"),s.animation("fade-out 0.3s ease-out forwards")] |> scl
+    True ->
+      [s.display("block"), s.animation("fade-in 0.3s ease-in forwards;")] |> scl
+    False ->
+      [s.display("none"), s.animation("fade-out 0.3s ease-out forwards")] |> scl
   }
 }
 

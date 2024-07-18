@@ -64,8 +64,10 @@ fn select_list_class() {
 
 fn selection_list_class_anim(open: Bool) {
   case open {
-    True -> [s.display("block"), s.animation("fade-in 0.4s ease-in forwards;")] |> scl
-    False -> [s.display("none"),s.animation("fade-out 0.4s ease-out forwards")] |> scl
+    True ->
+      [s.display("block"), s.animation("fade-in 0.4s ease-in forwards;")] |> scl
+    False ->
+      [s.display("none"), s.animation("fade-out 0.4s ease-out forwards")] |> scl
   }
 }
 

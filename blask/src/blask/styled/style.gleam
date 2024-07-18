@@ -1,7 +1,9 @@
 import lustre/element/html
 
 pub fn blask_style() {
-    html.style([], "
+  html.style(
+    [],
+    "
 
 @keyframes fade-in {
   0% {
@@ -30,5 +32,6 @@ pub fn blask_style() {
     display: none;
   }
 }
-    ")
+    ",
+  )
 }
