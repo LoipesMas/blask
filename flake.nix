@@ -17,6 +17,9 @@
           [
             gleam
             nodejs_22
+            rebar3
+            erlang_27
+            inotify-tools
           ];
         };
       });
