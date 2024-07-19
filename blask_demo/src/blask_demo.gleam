@@ -1,6 +1,7 @@
 import blask/styled/accordion.{type AccordionState, accordion}
 import blask/styled/select.{type SelectState, select}
 import blask/styled/style
+import blask/styled/tabs.{type TabsState, tabs}
 import lustre
 import lustre/element
 import lustre/element/html
@@ -32,6 +33,7 @@ type Model {
   Model(
     language_select_state: SelectState(LanguageOption),
     accordion_state: AccordionState,
+    tabs_state: TabsState,
   )
 }
 
@@ -44,12 +46,14 @@ fn init(_flags) -> Model {
       Erlang,
     ]),
     accordion_state: accordion.init_state(),
+    tabs_state: tabs.init_state(),
   )
 }
 
 type Msg {
   LanguageSelectStateChange(SelectState(LanguageOption))
   AccordionStateChange(AccordionState)
+  TabsStateChange(TabsState)
 }
 
 fn update(model: Model, msg: Msg) -> Model {
@@ -58,6 +62,7 @@ fn update(model: Model, msg: Msg) -> Model {
       Model(..model, language_select_state: new_state)
     AccordionStateChange(new_state) ->
       Model(..model, accordion_state: new_state)
+    TabsStateChange(new_state) -> Model(..model, tabs_state: new_state)
   }
 }
 
@@ -105,7 +110,7 @@ fn view(model: Model) -> element.Element(Msg) {
           display: language_to_str,
         ),
       ]),
-      html.div([], [
+      html.div([scl([s.width_("500px")])], [
         accordion(
           state: model.accordion_state,
           on_state_change: AccordionStateChange,
@@ -144,6 +149,34 @@ fn view(model: Model) -> element.Element(Msg) {
             ),
           ],
         ),
+      ]),
+      html.div([scl([s.width_("600px")])], [
+        tabs(state: model.tabs_state, on_state_change: TabsStateChange, tabs: [
+          #(
+            "FP",
+            html.p([], [
+              html.text(
+                "Functional Programming is a programming paradigm where programs are constructed by applying and composing functions. It is a declarative programming paradigm in which function definitions are trees of expressions that map values to other values, rather than a sequence of imperative statements which update the running state of the program.",
+              ),
+            ]),
+          ),
+          #(
+            "AP",
+            html.p([], [
+              html.text(
+                "Array Programming refers to solutions that allow the application of operations to an entire set of values at once. Such solutions are commonly used in scientific and engineering settings. ",
+              ),
+            ]),
+          ),
+          #(
+            "OOP",
+            html.p([], [
+              html.text(
+                "Object-oriented programming is a programming paradigm based on the concept of objects, which can contain data and code: data in the form of fields (often known as attributes or properties), and code in the form of procedures (often known as methods). In OOP, computer programs are designed by making them out of objects that interact with one another.",
+              ),
+            ]),
+          ),
+        ]),
       ]),
     ],
   )

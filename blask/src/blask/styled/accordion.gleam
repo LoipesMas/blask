@@ -38,7 +38,6 @@ fn accordion_class() {
   [
     s.border_radius_("0.5rem"),
     s.border("2px solid #909092"),
-    s.width_("500px"),
     s.background("#151515"),
   ]
   |> scld("styled-accordion-main")
@@ -59,6 +58,7 @@ fn head_class() {
     s.background("#191919"),
     s.hover([s.background("#252525")]),
     s.color("#eeeeee"),
+    s.cursor("pointer"),
   ]
   |> scld("styled-accordion-head")
 }

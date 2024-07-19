@@ -1,4 +1,4 @@
-import blask/internals/utils.{scl, scld}
+import blask/internals/utils.{scld}
 import blask/unstyled/select.{
   type SelectState as USelectState, select as unstyled_select,
 }
