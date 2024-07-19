@@ -1,4 +1,4 @@
-import blask/internals/utils.{scl, scld, split_pairs}
+import blask/internals/utils.{append_attributes, scl, scld, split_pairs}
 import gleam/list
 import lustre/element.{type Element}
 import lustre/element/html
@@ -47,11 +47,13 @@ fn body_class() {
 }
 
 fn body_class_open() {
-  [s.overflow("auto")] |> scld("tabs-body-open")
+  []
+  |> scld("tabs-body-open")
 }
 
 fn body_class_closed() {
-  [s.max_height_("0"), s.overflow("clip")] |> scld("tabs-body-closed")
+  [s.display("none")]
+  |> scld("tabs-body-closed")
 }
 
 fn view_item(
@@ -67,6 +69,6 @@ fn view_item(
   let #(head, body) = item(open)
   #(
     html.div([event.on_click(change_state), head_class()], [head]),
-    html.div(body_attrs, [body]),
+    append_attributes(body, body_attrs),
   )
 }
