@@ -62,7 +62,11 @@ fn head_class() {
 }
 
 fn head_class_open() {
-  [s.background("#222"), s.important(s.border_bottom("2px solid #eeeeee"))]
+  [
+    s.background("linear-gradient(#222 55%, #333333)"),
+    s.important(s.border_bottom("2px solid #eeeeee")),
+    s.hover([s.important(s.background("linear-gradient(#282828 50%, #383838)"))]),
+  ]
   |> scld("styled-tabs-head-open")
 }
 

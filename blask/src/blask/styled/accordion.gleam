@@ -74,7 +74,7 @@ fn body_class_open() {
 }
 
 fn body_class_closed() {
-  [s.display("none"), s.animation("fade-out 0.3s ease-out forwards")]
+  [s.display("none")]
   |> scld("styled-accordion-body-closed")
 }
 
