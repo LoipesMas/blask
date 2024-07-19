@@ -68,7 +68,7 @@ fn view_item(
   let body_attrs = [body_class(), body_class_animed]
   let #(head, body) = item(open)
   #(
-    html.div([event.on_click(change_state), head_class()], [head]),
+    append_attributes(head, [event.on_click(change_state), head_class()]),
     append_attributes(body, body_attrs),
   )
 }

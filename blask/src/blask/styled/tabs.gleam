@@ -17,37 +17,16 @@ pub const init_state = tabs.init_state
 pub type TabsItem(msg) =
   #(String, Element(msg))
 
-type HeadPosition {
-  First
-  Middle
-  Last
-  Only
-}
-
-fn idx_to_pos(idx: Int, count: Int) {
-  case idx == 0, idx == { count - 1 } {
-    True, True -> Only
-    True, False -> First
-    False, True -> Last
-    False, False -> Middle
-  }
-}
-
 pub fn tabs(
   state state: TabsState,
   on_state_change on_state_change: fn(TabsState) -> msg,
   tabs tab_items: List(TabsItem(msg)),
 ) -> Element(msg) {
-  let tab_items_w_pos =
-    list.index_map(tab_items, fn(item, idx) {
-      let pos = idx_to_pos(idx, list.length(tab_items))
-      #(item, pos)
-    })
   html.div([tabs_class()], [
     unstyled_tabs(
       state: state,
       on_state_change: on_state_change,
-      tabs: list.map(tab_items_w_pos, convert_item),
+      tabs: list.map(tab_items, convert_item),
     ),
   ])
 }
@@ -68,35 +47,28 @@ fn head_class() {
     s.padding_("0.6rem 0.6rem"),
     s.border_radius_("0"),
     s.border("none"),
+    s.border_right("2px solid #909092"),
+    s.border_bottom("2px solid #909092"),
     s.width_("100%"),
-    s.background("#191919"),
     s.hover([s.background("#252525")]),
     s.color("#eeeeee"),
     s.hover([s.color("#fbfbfb")]),
     s.cursor("pointer"),
     s.height_("100%"),
+    s.first_child([s.border_top_left_radius_("0.5rem")]),
+    s.last_child([s.border_top_right_radius_("0.5rem"), s.border_right("none")]),
   ]
   |> scld("styled-tabs-head")
 }
 
 fn head_class_open() {
-  [s.important(s.border_bottom("2px solid #999"))]
+  [s.background("#222"), s.important(s.border_bottom("2px solid #eeeeee"))]
   |> scld("styled-tabs-head-open")
 }
 
 fn head_class_closed() {
-  [s.important(s.border_bottom("2px solid #666666")), s.color("gray")]
+  [s.color("gray"), s.background("#111")]
   |> scld("styled-tabs-head-closed")
-}
-
-fn head_class_first() {
-  [s.important(s.border_top_left_radius_("0.5rem"))]
-  |> scld("styled-tabs-head-first")
-}
-
-fn head_class_last() {
-  [s.important(s.border_top_right_radius_("0.5rem"))]
-  |> scld("styled-tabs-head-last")
 }
 
 fn body_class() {
@@ -104,26 +76,29 @@ fn body_class() {
   |> scld("styled-tabs-body")
 }
 
-fn convert_item(
-  item_w_pos: #(TabsItem(msg), HeadPosition),
-) -> UnstyledTabsItem(msg) {
-  let #(styled_item, pos) = item_w_pos
+fn body_class_open() {
+  [s.animation("fade-in-o 0.4s ease-in forwards;")]
+  |> scld("styled-tabs-body-open")
+}
+
+fn body_class_closed() {
+  [s.display("none")]
+  |> scld("styled-tabs-body-closed")
+}
+
+fn convert_item(styled_item: TabsItem(msg)) -> UnstyledTabsItem(msg) {
   use open <- function.identity
   let #(head_text, inner_body) = styled_item
-  let head_class_pos = case pos {
-    First -> [head_class_first()]
-    Middle -> []
-    Last -> [head_class_last()]
-    Only -> [head_class_first(), head_class_last()]
-  }
   let head_class_anim = case open {
     True -> head_class_open()
     False -> head_class_closed()
   }
+  let body_class_anim = case open {
+    True -> body_class_open()
+    False -> body_class_closed()
+  }
   let head =
-    html.button([head_class(), head_class_anim, ..head_class_pos], [
-      html.text(head_text),
-    ])
-  let body = html.div([body_class()], [inner_body])
+    html.button([head_class(), head_class_anim], [html.text(head_text)])
+  let body = html.div([body_class(), body_class_anim], [inner_body])
   #(head, body)
 }
