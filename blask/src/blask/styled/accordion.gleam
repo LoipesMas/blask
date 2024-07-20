@@ -59,6 +59,7 @@ fn head_class() {
     s.hover([s.background("#252525")]),
     s.color("#eeeeee"),
     s.cursor("pointer"),
+    s.font_family("inherit"),
   ]
   |> scld("styled-accordion-head")
 }

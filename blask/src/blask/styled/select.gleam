@@ -30,6 +30,7 @@ fn select_button_main_class() {
     ]),
     s.display("flex"),
     s.justify_content("space-between"),
+    s.font_family("inherit"),
   ]
   |> scld("unstyled_select_button_main_class")
 }

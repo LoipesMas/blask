@@ -57,6 +57,7 @@ fn head_class() {
     s.height_("100%"),
     s.first_child([s.border_top_left_radius_("0.5rem")]),
     s.last_child([s.border_top_right_radius_("0.5rem"), s.border_right("none")]),
+    s.font_family("inherit"),
   ]
   |> scld("styled-tabs-head")
 }
