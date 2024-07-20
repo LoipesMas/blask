@@ -1,4 +1,4 @@
-import blask/internals/utils.{scl, scld, append_attributes}
+import blask/internals/utils.{append_attributes, scl, scld}
 import gleam/list
 import gleam/option
 import lustre/attribute
@@ -71,7 +71,10 @@ fn view_item(
   let body_attrs = [body_class(), body_class_animed]
   let #(head, body) = item(open, body_attrs)
   item_holder([
-    append_attributes(head,[event.on_click(change_state), scl([s.cursor("pointer")])]),
+    append_attributes(head, [
+      event.on_click(change_state),
+      scl([s.cursor("pointer")]),
+    ]),
     body,
   ])
 }
