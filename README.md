@@ -12,17 +12,18 @@ You can see them showcased here: <https://loipesmas.github.io/blask>
 
 - [x] select
 - [x] accordion
-- [ ] tabs
-- [ ] switch
+- [x] tabs
+- [ ] combobox
 
 ### Styled
 
 - [x] select
 - [x] accordion
-- [ ] tabs
-- [ ] switch
+- [x] tabs
+- [x] switch
 - [ ] button
 - [ ] input (text, number, file, etc)
+- [ ] combobox
 
 
 ## Links and usage
