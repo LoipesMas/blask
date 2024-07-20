@@ -23,4 +23,4 @@ gleroglero = ">= 1.1.0 and < 2.0.0"
 
 [dev-dependencies]
 gleeunit = ">= 1.0.0 and < 2.0.0"
-lustre_dev_tools = ">= 1.3.0 and < 1.4.0"
+lustre_dev_tools = ">= 1.4.1 and < 2.0.0"
