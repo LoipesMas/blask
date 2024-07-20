@@ -1,8 +1,10 @@
 import blask/styled/accordion.{type AccordionState, accordion}
 import blask/styled/select.{type SelectState, select}
 import blask/styled/style
+import blask/styled/switch.{switch}
 import blask/styled/tabs.{type TabsState, tabs}
 import lustre
+import lustre/attribute
 import lustre/element
 import lustre/element/html
 import sketch as s
@@ -34,6 +36,7 @@ type Model {
     language_select_state: SelectState(LanguageOption),
     accordion_state: AccordionState,
     tabs_state: TabsState,
+    show_lucy: Bool,
   )
 }
 
@@ -47,6 +50,7 @@ fn init(_flags) -> Model {
     ]),
     accordion_state: accordion.init_state(),
     tabs_state: tabs.init_state(),
+    show_lucy: False,
   )
 }
 
@@ -54,6 +58,7 @@ type Msg {
   LanguageSelectStateChange(SelectState(LanguageOption))
   AccordionStateChange(AccordionState)
   TabsStateChange(TabsState)
+  ShowLucyChange(Bool)
 }
 
 fn update(model: Model, msg: Msg) -> Model {
@@ -63,6 +68,7 @@ fn update(model: Model, msg: Msg) -> Model {
     AccordionStateChange(new_state) ->
       Model(..model, accordion_state: new_state)
     TabsStateChange(new_state) -> Model(..model, tabs_state: new_state)
+    ShowLucyChange(new_state) -> Model(..model, show_lucy: new_state)
   }
 }
 
@@ -180,6 +186,38 @@ fn view(model: Model) -> element.Element(Msg) {
           ),
         ]),
       ]),
+      html.div(
+        [
+          scl([
+            s.width_("fit-content"),
+            s.max_width_("100%"),
+            s.display("flex"),
+            s.flex_direction("row"),
+          ]),
+        ],
+        [
+          switch(
+            state: model.show_lucy,
+            on_state_change: ShowLucyChange,
+            id: "show-lucy",
+          ),
+          html.label(
+            [
+              attribute.for("show-lucy"),
+              scl([s.height_("fit-content"), s.margin_("auto 0.3em")]),
+            ],
+            [html.text("Show Lucy")],
+          ),
+          html.img([
+            attribute.src("priv/static/lucy.svg"),
+            attribute.height(30),
+            case model.show_lucy {
+              True -> attribute.none()
+              False -> scl([s.opacity(0.0)])
+            },
+          ]),
+        ],
+      ),
     ],
   )
 }
