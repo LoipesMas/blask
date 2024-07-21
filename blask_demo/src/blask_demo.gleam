@@ -1,4 +1,5 @@
 import blask/styled/accordion.{type AccordionState, accordion}
+import blask/styled/button
 import blask/styled/select.{type SelectState, select}
 import blask/styled/style
 import blask/styled/switch.{switch}
@@ -59,6 +60,7 @@ type Msg {
   AccordionStateChange(AccordionState)
   TabsStateChange(TabsState)
   ShowLucyChange(Bool)
+  NoOp
 }
 
 fn update(model: Model, msg: Msg) -> Model {
@@ -69,6 +71,7 @@ fn update(model: Model, msg: Msg) -> Model {
       Model(..model, accordion_state: new_state)
     TabsStateChange(new_state) -> Model(..model, tabs_state: new_state)
     ShowLucyChange(new_state) -> Model(..model, show_lucy: new_state)
+    NoOp -> model
   }
 }
 
@@ -218,6 +221,11 @@ fn view(model: Model) -> element.Element(Msg) {
           ]),
         ],
       ),
+      html.div([scl([s.width_("fit-content"), s.max_width_("100%")])], [
+        button.primary(NoOp, "Primary"),
+        button.secondary(NoOp, "Secondary"),
+        button.outlined(NoOp, "Outlined"),
+      ]),
     ],
   )
 }
