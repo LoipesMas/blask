@@ -34,7 +34,7 @@ pub fn tabs(
 fn tabs_class() {
   [
     s.border_radius_("0.5rem"),
-    s.border("2px solid #909092"),
+    s.border("1px solid #909092"),
     s.background("#151515"),
   ]
   |> scld("styled-tabs-main")
@@ -47,8 +47,8 @@ fn head_class() {
     s.padding_("0.6rem 0.6rem"),
     s.border_radius_("0"),
     s.border("none"),
-    s.border_right("2px solid #909092"),
-    s.border_bottom("2px solid #909092"),
+    s.border_right("1px solid #909092"),
+    s.border_bottom("1px solid #909092"),
     s.width_("100%"),
     s.hover([s.background("#252525")]),
     s.color("#eeeeee"),
@@ -65,7 +65,7 @@ fn head_class() {
 fn head_class_open() {
   [
     s.background("linear-gradient(#222 55%, #333333)"),
-    s.important(s.border_bottom("2px solid #eeeeee")),
+    s.important(s.border_bottom("1px solid #eeeeee")),
     s.hover([s.important(s.background("linear-gradient(#282828 50%, #383838)"))]),
   ]
   |> scld("styled-tabs-head-open")
@@ -77,7 +77,12 @@ fn head_class_closed() {
 }
 
 fn body_class() {
-  [s.padding_("0.6rem 0.8rem"), s.color("#ddd")]
+  [
+    s.padding_("0.6rem 0.8rem"),
+    s.color("#ddd"),
+    s.font_weight("300"),
+    s.font_size_("1.1rem"),
+  ]
   |> scld("styled-tabs-body")
 }
 

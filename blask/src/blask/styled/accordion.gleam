@@ -37,7 +37,7 @@ pub fn accordion(
 fn accordion_class() {
   [
     s.border_radius_("0.5rem"),
-    s.border("2px solid #909092"),
+    s.border("1px solid #909092"),
     s.background("#151515"),
   ]
   |> scld("styled-accordion-main")
