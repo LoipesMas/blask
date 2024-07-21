@@ -9,7 +9,7 @@ pub fn scl(styles) {
 }
 
 pub fn scld(styles, name) {
-  styles |> s.dynamic(name, _) |> s.memo |> s.to_lustre
+  styles |> s.dynamic("blask-" <> name, _) |> s.memo |> s.to_lustre
 }
 
 pub fn split_pairs(pairs: List(#(a, b))) -> #(List(a), List(b)) {
