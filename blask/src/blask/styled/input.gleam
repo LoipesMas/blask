@@ -50,22 +50,6 @@ fn file_class() {
 pub type TextState =
   String
 
-pub type InputType {
-  Text
-  Password
-  File
-  Other(String)
-}
-
-fn input_type_to_str(input_type: InputType) -> String {
-  case input_type {
-    Text -> "text"
-    Password -> "password"
-    File -> "file"
-    Other(type_) -> type_
-  }
-}
-
 pub type NoOnInput =
   Nil
 
@@ -78,10 +62,14 @@ pub type NoValue =
 pub type Value =
   String
 
-pub opaque type InputProps(on_input, value) {
+pub type TextInput
+
+pub type FileInput
+
+pub opaque type InputProps(on_input, value, input_class) {
   InputProps(
     on_input: on_input,
-    type_: InputType,
+    type_: String,
     placeholder: option.Option(String),
     id: option.Option(String),
     name: option.Option(String),
@@ -89,10 +77,10 @@ pub opaque type InputProps(on_input, value) {
   )
 }
 
-pub fn text() -> InputProps(NoOnInput, NoValue) {
+pub fn text() -> InputProps(NoOnInput, NoValue, TextInput) {
   InputProps(
     on_input: Nil,
-    type_: Text,
+    type_: "text",
     placeholder: option.None,
     id: option.None,
     name: option.None,
@@ -100,10 +88,10 @@ pub fn text() -> InputProps(NoOnInput, NoValue) {
   )
 }
 
-pub fn password() -> InputProps(NoOnInput, NoValue) {
+pub fn password() -> InputProps(NoOnInput, NoValue, TextInput) {
   InputProps(
     on_input: Nil,
-    type_: Password,
+    type_: "password",
     placeholder: option.None,
     id: option.None,
     name: option.None,
@@ -111,10 +99,10 @@ pub fn password() -> InputProps(NoOnInput, NoValue) {
   )
 }
 
-pub fn file() -> InputProps(NoOnInput, NoValue) {
+pub fn file() -> InputProps(NoOnInput, NoValue, FileInput) {
   InputProps(
     on_input: Nil,
-    type_: File,
+    type_: "file",
     placeholder: option.None,
     id: option.None,
     name: option.None,
@@ -122,10 +110,10 @@ pub fn file() -> InputProps(NoOnInput, NoValue) {
   )
 }
 
-pub fn custom(type_: String) -> InputProps(NoOnInput, NoValue) {
+pub fn custom(type_: String) -> InputProps(NoOnInput, NoValue, TextInput) {
   InputProps(
     on_input: Nil,
-    type_: Other(type_),
+    type_: type_,
     placeholder: option.None,
     id: option.None,
     name: option.None,
@@ -134,9 +122,9 @@ pub fn custom(type_: String) -> InputProps(NoOnInput, NoValue) {
 }
 
 pub fn on_input(
-  props: InputProps(NoOnInput, v),
+  props: InputProps(NoOnInput, v, TextInput),
   on_input: OnInput(msg),
-) -> InputProps(OnInput(msg), v) {
+) -> InputProps(OnInput(msg), v, TextInput) {
   InputProps(
     on_input: on_input,
     type_: props.type_,
@@ -148,24 +136,27 @@ pub fn on_input(
 }
 
 pub fn with_placeholder(
-  props: InputProps(i, v),
+  props: InputProps(i, v, TextInput),
   placeholder: String,
-) -> InputProps(i, v) {
+) -> InputProps(i, v, TextInput) {
   InputProps(..props, placeholder: option.Some(placeholder))
 }
 
-pub fn with_id(props: InputProps(i, v), id: String) -> InputProps(i, v) {
+pub fn with_id(props: InputProps(i, v, t), id: String) -> InputProps(i, v, t) {
   InputProps(..props, placeholder: option.Some(id))
 }
 
-pub fn with_name(props: InputProps(i, v), name: String) -> InputProps(i, v) {
+pub fn with_name(
+  props: InputProps(i, v, t),
+  name: String,
+) -> InputProps(i, v, t) {
   InputProps(..props, placeholder: option.Some(name))
 }
 
 pub fn with_value(
-  props: InputProps(i, NoValue),
+  props: InputProps(i, NoValue, TextInput),
   value: Value,
-) -> InputProps(i, Value) {
+) -> InputProps(i, Value, TextInput) {
   InputProps(
     on_input: props.on_input,
     type_: props.type_,
@@ -176,18 +167,25 @@ pub fn with_value(
   )
 }
 
-pub fn build(props: InputProps(OnInput(msg), Value)) -> Element(msg) {
-  let class = case props.type_ {
-    Text | Password | Other(_) -> text_class
-    File -> file_class
-  }
+pub fn build(props: InputProps(OnInput(msg), Value, TextInput)) -> Element(msg) {
   html.input([
-    a.type_(input_type_to_str(props.type_)),
+    a.type_(props.type_),
     event.on_input(props.on_input),
     props.placeholder |> option.map(a.placeholder) |> option.unwrap(a.none()),
     props.id |> option.map(a.id) |> option.unwrap(a.none()),
     props.name |> option.map(a.name) |> option.unwrap(a.none()),
     a.value(props.value),
-    class(),
+    text_class(),
+  ])
+}
+
+pub fn build_file(
+  props: InputProps(NoOnInput, NoValue, FileInput),
+) -> Element(msg) {
+  html.input([
+    a.type_(props.type_),
+    props.id |> option.map(a.id) |> option.unwrap(a.none()),
+    props.name |> option.map(a.name) |> option.unwrap(a.none()),
+    file_class(),
   ])
 }

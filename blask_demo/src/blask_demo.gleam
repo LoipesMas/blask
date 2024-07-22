@@ -256,9 +256,7 @@ fn view(model: Model) -> element.Element(Msg) {
             |> input.with_placeholder("Password")
             |> input.build(),
           input.file()
-            |> input.with_value("")
-            |> input.on_input(fn(_) { NoOp })
-            |> input.build(),
+            |> input.build_file(),
         ],
       ),
     ],
