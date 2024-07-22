@@ -21,8 +21,8 @@ You can see them showcased here: <https://loipesmas.github.io/blask>
 - [x] accordion
 - [x] tabs
 - [x] switch
-- [ ] button
-- [ ] input (text, number, file, etc)
+- [x] button
+- [x] input (text, number, file, etc)
 - [ ] combobox
 
 
