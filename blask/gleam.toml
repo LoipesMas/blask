@@ -1,5 +1,5 @@
 name = "blask"
-version = "0.0.2"
+version = "0.0.3"
 target = "javascript"
 
 description = "A UI component library for Lustre"
