@@ -1,4 +1,3 @@
-import blask/internals/utils.{scl, scld}
 import blask/unstyled/accordion.{
   type AccordionItem as UnstyledAccordionItem,
   type AccordionState as UAccordionState, accordion as unstyled_accordion,
@@ -6,9 +5,9 @@ import blask/unstyled/accordion.{
 import gleam/function
 import gleam/list
 import gleroglero/solid
+import sketch as s
 import sketch/lustre/element.{type Element}
 import sketch/lustre/element/html
-import sketch as s
 
 pub type AccordionState =
   UAccordionState
@@ -28,8 +27,8 @@ pub fn accordion(
       state: state,
       on_state_change: on_state_change,
       items: list.map(items, convert_item),
-      item_holder: html.div(scl([s.margin_("0.1rem")]), [], _),
-      separator: html.hr(scl([s.margin_("0")]), []),
+      item_holder: html.div(s.class([s.margin_("0.1rem")]), [], _),
+      separator: html.hr(s.class([s.margin_("0")]), []),
     ),
   ])
 }
@@ -40,7 +39,7 @@ fn accordion_class() {
     s.border("1px solid #909092"),
     s.background("#151515"),
   ]
-  |> scld("styled-accordion-main")
+  |> s.class
 }
 
 fn head_class() {
@@ -61,22 +60,22 @@ fn head_class() {
     s.cursor("pointer"),
     s.font_family("inherit"),
   ]
-  |> scld("styled-accordion-head")
+  |> s.class
 }
 
 fn body_class() {
   [s.padding_("0.6rem 0.8rem"), s.color("#ddd")]
-  |> scld("styled-accordion-body")
+  |> s.class
 }
 
 fn body_class_open() {
   [s.display("block"), s.animation("fade-in 0.3s ease-in forwards;")]
-  |> scld("styled-accordion-body-open")
+  |> s.class
 }
 
 fn body_class_closed() {
   [s.display("none")]
-  |> scld("styled-accordion-body-closed")
+  |> s.class
 }
 
 fn icon_class() {
@@ -92,9 +91,8 @@ fn icon_class() {
 
 fn icon_class_anim(open: Bool) {
   case open {
-    True ->
-      [s.transform("rotate(0.5turn)")]
-    False -> [] 
+    True -> [s.transform("rotate(0.5turn)")]
+    False -> []
   }
 }
 
@@ -108,8 +106,11 @@ fn convert_item(styled_item: AccordionItem(msg)) -> UnstyledAccordionItem(msg) {
   let head =
     html.button(head_class(), head_attrs, [
       html.text(head_text),
-      html.span(icon_class() |> list.append(icon_class_anim(open)) |> s.class,
-      [], [solid.chevron_down() |> element.styled]),
+      html.span(
+        icon_class() |> list.append(icon_class_anim(open)) |> s.class,
+        [],
+        [solid.chevron_down() |> element.styled],
+      ),
     ])
   let body =
     html.div(body_class_anim, [], [html.div(body_class(), [], [inner_body])])

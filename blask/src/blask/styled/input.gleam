@@ -1,10 +1,9 @@
-import blask/internals/utils.{scld}
 import gleam/option
 import lustre/attribute as a
-import sketch/lustre/element.{type Element}
-import sketch/lustre/element/html
 import lustre/event
 import sketch as s
+import sketch/lustre/element.{type Element}
+import sketch/lustre/element/html
 
 fn text_class() {
   [
@@ -166,7 +165,7 @@ pub fn with_value(
 }
 
 pub fn build(props: InputProps(OnInput(msg), Value, TextInput)) -> Element(msg) {
-  html.input(text_class() |> s.class,[
+  html.input(text_class() |> s.class, [
     a.type_(props.type_),
     event.on_input(props.on_input),
     props.placeholder |> option.map(a.placeholder) |> option.unwrap(a.none()),
@@ -179,7 +178,7 @@ pub fn build(props: InputProps(OnInput(msg), Value, TextInput)) -> Element(msg) 
 pub fn build_file(
   props: InputProps(NoOnInput, NoValue, FileInput),
 ) -> Element(msg) {
-  html.input(file_class() |> s.class,[
+  html.input(file_class() |> s.class, [
     a.type_(props.type_),
     props.id |> option.map(a.id) |> option.unwrap(a.none()),
     props.name |> option.map(a.name) |> option.unwrap(a.none()),

@@ -1,12 +1,11 @@
-import gleam/list
-import blask/internals/utils.{scld}
 import blask/unstyled/select.{
   type SelectState as USelectState, select as unstyled_select,
 }
+import gleam/list
 import gleroglero/solid
+import sketch as s
 import sketch/lustre/element
 import sketch/lustre/element/html
-import sketch as s
 import sketch/size
 
 pub type SelectState(o) =
@@ -101,7 +100,11 @@ pub fn select(
     main_button: fn(option) {
       html.button(select_button_main_class() |> s.class, [], [
         html.text(option_to_str(option)),
-        html.span([icon_class(), ..rotate_class] |> list.flatten |> s.class, [], [solid.chevron_down() |> element.styled]),
+        html.span(
+          [icon_class(), ..rotate_class] |> list.flatten |> s.class,
+          [],
+          [solid.chevron_down() |> element.styled],
+        ),
       ])
     },
     list_button: fn(option) {
@@ -109,6 +112,10 @@ pub fn select(
         html.text(option_to_str(option)),
       ])
     },
-    list: html.div([select_list_class(), ..slca] |> list.flatten |> s.class, [], _),
+    list: html.div(
+      [select_list_class(), ..slca] |> list.flatten |> s.class,
+      [],
+      _,
+    ),
   )
 }

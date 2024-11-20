@@ -1,4 +1,3 @@
-import blask/internals/utils.{append_attributes, scl, scld}
 import gleam/list
 import gleam/option
 import lustre/attribute
@@ -16,7 +15,8 @@ pub fn init_state() {
 }
 
 pub type AccordionItem(msg) =
-  fn(Bool, List(attribute.Attribute(msg)), List(s.Class)) -> #(Element(msg), Element(msg))
+  fn(Bool, List(attribute.Attribute(msg)), List(s.Class)) ->
+    #(Element(msg), Element(msg))
 
 pub fn accordion(
   state state: AccordionState,
@@ -25,7 +25,7 @@ pub fn accordion(
   item_holder item_holder: fn(List(Element(msg))) -> Element(msg),
   separator separator: Element(msg),
 ) -> Element(msg) {
-  html.div([] |> scl, [], {
+  html.div([] |> s.class, [], {
     {
       use item, idx <- list.index_map(items)
       let open =
@@ -47,15 +47,15 @@ pub fn accordion(
 }
 
 fn body_class() {
-  [] |> scld("accordion-body")
+  [] |> s.class
 }
 
 fn body_class_open() {
-  [s.overflow("auto")] |> scld("accordion-body-open")
+  [s.overflow("auto")] |> s.class
 }
 
 fn body_class_closed() {
-  [s.max_height_("0"), s.overflow("clip")] |> scld("accordion-body-closed")
+  [s.max_height_("0"), s.overflow("clip")] |> s.class
 }
 
 fn view_item(

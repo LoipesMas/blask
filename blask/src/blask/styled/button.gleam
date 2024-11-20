@@ -1,8 +1,8 @@
 import gleam/list
-import sketch/lustre/element.{type Element}
-import sketch/lustre/element/html
 import lustre/event
 import sketch as s
+import sketch/lustre/element.{type Element}
+import sketch/lustre/element/html
 
 fn base_class() {
   [
@@ -28,8 +28,13 @@ fn primary_class() {
 }
 
 pub fn primary(on_click on_click: msg, text text: String) -> Element(msg) {
-  html.button([base_class(), primary_class()] |> list.flatten |>
-  s.class,[event.on_click(on_click)], [ html.text(text), ])
+  html.button(
+    [base_class(), primary_class()]
+      |> list.flatten
+      |> s.class,
+    [event.on_click(on_click)],
+    [html.text(text)],
+  )
 }
 
 fn secondary_class() {
@@ -44,8 +49,13 @@ fn secondary_class() {
 }
 
 pub fn secondary(on_click on_click: msg, text text: String) -> Element(msg) {
-  html.button([base_class(), secondary_class()] |> list.flatten |>
-  s.class,[event.on_click(on_click)], [ html.text(text), ])
+  html.button(
+    [base_class(), secondary_class()]
+      |> list.flatten
+      |> s.class,
+    [event.on_click(on_click)],
+    [html.text(text)],
+  )
 }
 
 fn outlined_class() {
@@ -60,6 +70,11 @@ fn outlined_class() {
 }
 
 pub fn outlined(on_click on_click: msg, text text: String) -> Element(msg) {
-  html.button([base_class(), outlined_class()] |> list.flatten |>
-  s.class,[event.on_click(on_click)], [ html.text(text), ])
+  html.button(
+    [base_class(), outlined_class()]
+      |> list.flatten
+      |> s.class,
+    [event.on_click(on_click)],
+    [html.text(text)],
+  )
 }

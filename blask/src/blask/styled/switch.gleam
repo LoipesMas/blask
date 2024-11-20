@@ -1,9 +1,8 @@
 import gleam/list
-import blask/internals/utils.{scld}
 import lustre/attribute as a
-import sketch/lustre/element/html
 import lustre/event
 import sketch as s
+import sketch/lustre/element/html
 
 pub type SwitchState =
   Bool
@@ -68,16 +67,16 @@ pub fn switch(
     False -> span_class_unchecked()
   }
   html.button(
-  [
-
-      switch_class(),
-      switch_class_anim,
-  ] |> list.flatten |> s.class,
-
+    [switch_class(), switch_class_anim]
+      |> list.flatten
+      |> s.class,
+    [event.on_click(state_change(!state)), a.id(id)],
     [
-      event.on_click(state_change(!state)),
-      a.id(id),
+      html.span(
+        [span_class(), span_class_anim] |> list.flatten |> s.class,
+        [],
+        [],
+      ),
     ],
-    [html.span([span_class(), span_class_anim] |> list.flatten |> s.class, [], [])],
   )
 }
