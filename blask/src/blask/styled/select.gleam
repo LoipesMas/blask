@@ -1,10 +1,11 @@
+import gleam/list
 import blask/internals/utils.{scld}
 import blask/unstyled/select.{
   type SelectState as USelectState, select as unstyled_select,
 }
 import gleroglero/solid
-import lustre/element
-import lustre/element/html
+import sketch/lustre/element
+import sketch/lustre/element/html
 import sketch as s
 import sketch/size
 
@@ -32,7 +33,6 @@ fn select_button_main_class() {
     s.justify_content("space-between"),
     s.font_family("inherit"),
   ]
-  |> scld("unstyled_select_button_main_class")
 }
 
 fn select_button_list_class() {
@@ -47,7 +47,6 @@ fn select_button_list_class() {
     s.color("#eee"),
     s.hover([s.cursor("pointer"), s.background("#333")]),
   ]
-  |> scld("unstyled_select_button_list_class")
 }
 
 fn select_list_class() {
@@ -60,17 +59,14 @@ fn select_list_class() {
     s.border_radius_("0.5rem"),
     s.overflow("hidden"),
   ]
-  |> scld("unstyled_select_list_class")
 }
 
 fn slca_open() {
   [s.display("block"), s.animation("fade-in 0.4s ease-in forwards;")]
-  |> scld("slca_open")
 }
 
 fn slca_closed() {
   [s.display("none"), s.animation("fade-out 0.4s ease-out forwards")]
-  |> scld("slca_closed")
 }
 
 fn icon_class() {
@@ -80,12 +76,10 @@ fn icon_class() {
     s.height_("20px"),
     s.transition("transform 0.3s ease-out"),
   ]
-  |> scld("unstyled_select_icon")
 }
 
 fn rotate180() {
   [s.transform("rotate(0.5turn)")]
-  |> scld("unstyled_select_icon_open")
 }
 
 pub fn select(
@@ -105,16 +99,16 @@ pub fn select(
     state: state,
     on_state_change: on_state_change,
     main_button: fn(option) {
-      html.button([select_button_main_class()], [
+      html.button(select_button_main_class() |> s.class, [], [
         html.text(option_to_str(option)),
-        html.span([icon_class(), ..rotate_class], [solid.chevron_down()]),
+        html.span([icon_class(), ..rotate_class] |> list.flatten |> s.class, [], [solid.chevron_down() |> element.styled]),
       ])
     },
     list_button: fn(option) {
-      html.button([select_button_list_class()], [
+      html.button(select_button_list_class() |> s.class, [], [
         html.text(option_to_str(option)),
       ])
     },
-    list: html.div([select_list_class(), ..slca], _),
+    list: html.div([select_list_class(), ..slca] |> list.flatten |> s.class, [], _),
   )
 }

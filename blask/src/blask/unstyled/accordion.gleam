@@ -2,10 +2,10 @@ import blask/internals/utils.{append_attributes, scl, scld}
 import gleam/list
 import gleam/option
 import lustre/attribute
-import lustre/element.{type Element}
-import lustre/element/html
 import lustre/event
 import sketch as s
+import sketch/lustre/element.{type Element}
+import sketch/lustre/element/html
 
 pub type AccordionState {
   AccordionState(opened_item_idx: option.Option(Int))
@@ -16,7 +16,7 @@ pub fn init_state() {
 }
 
 pub type AccordionItem(msg) =
-  fn(Bool, List(attribute.Attribute(msg))) -> #(Element(msg), Element(msg))
+  fn(Bool, List(attribute.Attribute(msg)), List(s.Class)) -> #(Element(msg), Element(msg))
 
 pub fn accordion(
   state state: AccordionState,
@@ -25,7 +25,7 @@ pub fn accordion(
   item_holder item_holder: fn(List(Element(msg))) -> Element(msg),
   separator separator: Element(msg),
 ) -> Element(msg) {
-  html.div([], {
+  html.div([] |> scl, [], {
     {
       use item, idx <- list.index_map(items)
       let open =
@@ -69,12 +69,7 @@ fn view_item(
     False -> body_class_closed()
   }
   let body_attrs = [body_class(), body_class_animed]
-  let #(head, body) = item(open, body_attrs)
-  item_holder([
-    append_attributes(head, [
-      event.on_click(change_state),
-      scl([s.cursor("pointer")]),
-    ]),
-    body,
-  ])
+  let head_attrs = [event.on_click(change_state)]
+  let #(head, body) = item(open, head_attrs, body_attrs)
+  item_holder([head, body])
 }

@@ -1,13 +1,12 @@
-import blask/internals/utils.{scld}
 import blask/unstyled/tabs.{
   type TabsItem as UnstyledTabsItem, type TabsState as UTabsState,
   tabs as unstyled_tabs,
 }
 import gleam/function
 import gleam/list
-import lustre/element.{type Element}
-import lustre/element/html
 import sketch as s
+import sketch/lustre/element.{type Element}
+import sketch/lustre/element/html
 
 pub type TabsState =
   UTabsState
@@ -22,7 +21,7 @@ pub fn tabs(
   on_state_change on_state_change: fn(TabsState) -> msg,
   tabs tab_items: List(TabsItem(msg)),
 ) -> Element(msg) {
-  html.div([tabs_class()], [
+  html.div(tabs_class() |> s.class, [], [
     unstyled_tabs(
       state: state,
       on_state_change: on_state_change,
@@ -37,7 +36,6 @@ fn tabs_class() {
     s.border("1px solid #909092"),
     s.background("#151515"),
   ]
-  |> scld("styled-tabs-main")
 }
 
 fn head_class() {
@@ -59,7 +57,6 @@ fn head_class() {
     s.last_child([s.border_top_right_radius_("0.5rem"), s.border_right("none")]),
     s.font_family("inherit"),
   ]
-  |> scld("styled-tabs-head")
 }
 
 fn head_class_open() {
@@ -68,12 +65,10 @@ fn head_class_open() {
     s.important(s.border_bottom("1px solid #eeeeee")),
     s.hover([s.important(s.background("linear-gradient(#282828 50%, #383838)"))]),
   ]
-  |> scld("styled-tabs-head-open")
 }
 
 fn head_class_closed() {
   [s.color("gray"), s.background("#111")]
-  |> scld("styled-tabs-head-closed")
 }
 
 fn body_class() {
@@ -83,17 +78,14 @@ fn body_class() {
     s.font_weight("300"),
     s.font_size_("1.1rem"),
   ]
-  |> scld("styled-tabs-body")
 }
 
 fn body_class_open() {
   [s.animation("fade-in-o 0.4s ease-in forwards;")]
-  |> scld("styled-tabs-body-open")
 }
 
 fn body_class_closed() {
   [s.display("none")]
-  |> scld("styled-tabs-body-closed")
 }
 
 fn convert_item(styled_item: TabsItem(msg)) -> UnstyledTabsItem(msg) {
@@ -107,8 +99,12 @@ fn convert_item(styled_item: TabsItem(msg)) -> UnstyledTabsItem(msg) {
     True -> body_class_open()
     False -> body_class_closed()
   }
-  let head =
-    html.button([head_class(), head_class_anim], [html.text(head_text)])
-  let body = html.div([body_class(), body_class_anim], [inner_body])
-  #(head, body)
+  let head = html.button(s.class([]), [], [html.text(head_text)])
+  let body = html.div([] |> s.class, [], [inner_body])
+  #(
+    [head_class(), head_class_anim] |> list.flatten,
+    head,
+    [body_class(), body_class_anim] |> list.flatten,
+    body,
+  )
 }

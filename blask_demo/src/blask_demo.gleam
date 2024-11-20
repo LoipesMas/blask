@@ -6,16 +6,16 @@ import blask/styled/select.{type SelectState, select}
 import blask/styled/style
 import blask/styled/switch.{switch}
 import blask/styled/tabs.{type TabsState, tabs}
+import gleam/result
 import lustre
 import lustre/attribute
-import lustre/element
-import lustre/element/html
 import sketch as s
 import sketch/lustre as sketch_lustre
-import sketch/options as sketch_options
+import sketch/lustre/element
+import sketch/lustre/element/html
 
 fn scl(styles) {
-  styles |> s.class |> s.to_lustre
+  styles |> s.class
 }
 
 type LanguageOption {
@@ -87,40 +87,37 @@ fn update(model: Model, msg: Msg) -> Model {
 
 fn view(model: Model) -> element.Element(Msg) {
   html.div(
+    scl([
+      s.display("flex"),
+      s.flex_direction("column"),
+      s.align_items("center"),
+      s.gap_("1rem"),
+      s.background(bg.bg_svg),
+      s.height_("100%"),
+      s.max_width_("100vw"),
+      s.padding_("0 1em"),
+    ]),
+    [],
     [
-      scl([
-        s.display("flex"),
-        s.flex_direction("column"),
-        s.align_items("center"),
-        s.gap_("1rem"),
-        s.background(bg.bg_svg),
-        s.height_("100%"),
-        s.max_width_("100vw"),
-        s.padding_("0 1em"),
-      ]),
-    ],
-    [
-      style.blask_style(),
+      style.blask_style() |> element.styled,
       html.h1(
-        [
-          scl([
-            s.font_size_("2rem"),
-            s.width_("100%"),
-            s.text_align("center"),
-            s.margin_("1.5rem 0"),
-          ]),
-        ],
+        scl([
+          s.font_size_("2rem"),
+          s.width_("100%"),
+          s.text_align("center"),
+          s.margin_("1.5rem 0"),
+        ]),
+        [],
         [html.text("🌟 Blask Showcase Site 🌟")],
       ),
-      html.div([scl([s.display("flex"), s.flex_direction("row")])], [
+      html.div(scl([s.display("flex"), s.flex_direction("row")]), [], [
         html.div(
-          [
-            scl([
-              s.height_("fit-content"),
-              s.margin_("auto 1rem auto 0"),
-              s.font_size_("1.2rem"),
-            ]),
-          ],
+          scl([
+            s.height_("fit-content"),
+            s.margin_("auto 1rem auto 0"),
+            s.font_size_("1.2rem"),
+          ]),
+          [],
           [html.text("Your favourite language: ")],
         ),
         select(
@@ -129,14 +126,14 @@ fn view(model: Model) -> element.Element(Msg) {
           display: language_to_str,
         ),
       ]),
-      html.div([scl([s.width_("500px"), s.max_width_("100%")])], [
+      html.div(scl([s.width_("500px"), s.max_width_("100%")]), [], [
         accordion(
           state: model.accordion_state,
           on_state_change: AccordionStateChange,
           items: [
             #(
               "Gleam",
-              html.p([], [
+              html.p(s.class([]), [], [
                 html.text(
                   "Gleam is a general-purpose, concurrent, functional high-level programming language that compiles to Erlang or JavaScript source code.",
                 ),
@@ -144,7 +141,7 @@ fn view(model: Model) -> element.Element(Msg) {
             ),
             #(
               "Haskell",
-              html.p([], [
+              html.p(s.class([]), [], [
                 html.text(
                   "Haskell is a general-purpose, statically-typed, purely functional programming language with type inference and lazy evaluation.",
                 ),
@@ -152,7 +149,7 @@ fn view(model: Model) -> element.Element(Msg) {
             ),
             #(
               "Rust",
-              html.p([], [
+              html.p(s.class([]), [], [
                 html.text(
                   "Rust is a multi-paradigm, general-purpose programming language that emphasizes performance, type safety, and concurrency.",
                 ),
@@ -160,7 +157,7 @@ fn view(model: Model) -> element.Element(Msg) {
             ),
             #(
               "Erlang",
-              html.p([], [
+              html.p(s.class([]), [], [
                 html.text(
                   "Erlang is a general-purpose, concurrent, functional high-level programming language, and a garbage-collected runtime system",
                 ),
@@ -169,11 +166,11 @@ fn view(model: Model) -> element.Element(Msg) {
           ],
         ),
       ]),
-      html.div([scl([s.width_("600px"), s.max_width_("100%")])], [
+      html.div(scl([s.width_("600px"), s.max_width_("100%")]), [], [
         tabs(state: model.tabs_state, on_state_change: TabsStateChange, tabs: [
           #(
             "FP",
-            html.p([], [
+            html.p(scl([]), [], [
               html.text(
                 "Functional Programming is a programming paradigm where programs are constructed by applying and composing functions. It is a declarative programming paradigm in which function definitions are trees of expressions that map values to other values, rather than a sequence of imperative statements which update the running state of the program.",
               ),
@@ -181,7 +178,7 @@ fn view(model: Model) -> element.Element(Msg) {
           ),
           #(
             "AP",
-            html.p([], [
+            html.p(scl([]), [], [
               html.text(
                 "Array Programming refers to solutions that allow the application of operations to an entire set of values at once. Such solutions are commonly used in scientific and engineering settings. ",
               ),
@@ -189,7 +186,7 @@ fn view(model: Model) -> element.Element(Msg) {
           ),
           #(
             "OOP",
-            html.p([], [
+            html.p(scl([]), [], [
               html.text(
                 "Object-oriented programming is a programming paradigm based on the concept of objects, which can contain data and code: data in the form of fields (often known as attributes or properties), and code in the form of procedures (often known as methods). In OOP, computer programs are designed by making them out of objects that interact with one another.",
               ),
@@ -198,14 +195,13 @@ fn view(model: Model) -> element.Element(Msg) {
         ]),
       ]),
       html.div(
-        [
-          scl([
-            s.width_("fit-content"),
-            s.max_width_("100%"),
-            s.display("flex"),
-            s.flex_direction("row"),
-          ]),
-        ],
+        scl([
+          s.width_("fit-content"),
+          s.max_width_("100%"),
+          s.display("flex"),
+          s.flex_direction("row"),
+        ]),
+        [],
         [
           switch(
             state: model.show_lucy,
@@ -213,37 +209,33 @@ fn view(model: Model) -> element.Element(Msg) {
             id: "show-lucy",
           ),
           html.label(
-            [
-              attribute.for("show-lucy"),
-              scl([s.height_("fit-content"), s.margin_("auto 0.3em")]),
-            ],
+            scl([s.height_("fit-content"), s.margin_("auto 0.3em")]),
+            [attribute.for("show-lucy")],
             [html.text("Show Lucy")],
           ),
-          html.img([
-            attribute.src("priv/static/lucy.svg"),
-            attribute.height(30),
+          html.img(
             case model.show_lucy {
-              True -> attribute.none()
+              True -> scl([])
               False -> scl([s.opacity(0.0)])
             },
-          ]),
+            [attribute.src("priv/static/lucy.svg"), attribute.height(30)],
+          ),
         ],
       ),
-      html.div([scl([s.width_("fit-content"), s.max_width_("100%")])], [
+      html.div(scl([s.width_("fit-content"), s.max_width_("100%")]), [], [
         button.primary(NoOp, "Primary"),
         button.secondary(NoOp, "Secondary"),
         button.outlined(NoOp, "Outlined"),
       ]),
       html.div(
-        [
-          scl([
-            s.width_("fit-content"),
-            s.max_width_("100%"),
-            s.display("flex"),
-            s.flex_direction("column"),
-            s.gap_("0.5rem"),
-          ]),
-        ],
+        scl([
+          s.width_("fit-content"),
+          s.max_width_("100%"),
+          s.display("flex"),
+          s.flex_direction("column"),
+          s.gap_("0.5rem"),
+        ]),
+        [],
         [
           input.text()
             |> input.with_value(model.username)
@@ -264,15 +256,14 @@ fn view(model: Model) -> element.Element(Msg) {
 }
 
 pub fn main() {
-  let assert Ok(cache) =
-    sketch_options.document()
-    |> sketch_lustre.setup()
+  let assert Ok(cache) = s.cache(strategy: s.Ephemeral)
 
-  let app =
-    view
-    |> sketch_lustre.compose(cache)
-    |> lustre.simple(init, update, _)
-  let assert Ok(_) = lustre.start(app, "#app", Nil)
-
-  Nil
+  sketch_lustre.node()
+  // Add the sketch CSS generation "view middleware".
+  |> sketch_lustre.compose(view, cache)
+  // Give the new view function to lustre runtime!
+  |> lustre.simple(init, update, _)
+  // And voilà!
+  |> lustre.start("#app", Nil)
+  |> result.is_ok
 }

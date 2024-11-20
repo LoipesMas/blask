@@ -1,6 +1,6 @@
-import blask/internals/utils.{scld}
-import lustre/element.{type Element}
-import lustre/element/html
+import gleam/list
+import sketch/lustre/element.{type Element}
+import sketch/lustre/element/html
 import lustre/event
 import sketch as s
 
@@ -14,7 +14,6 @@ fn base_class() {
     s.transition("all 0.1s ease-in-out"),
     s.font_size_("1rem"),
   ]
-  |> scld("button-base")
 }
 
 fn primary_class() {
@@ -26,13 +25,11 @@ fn primary_class() {
     s.hover([s.background("#cccccc")]),
     s.active([s.background("#ffffff")]),
   ]
-  |> scld("button-primary")
 }
 
 pub fn primary(on_click on_click: msg, text text: String) -> Element(msg) {
-  html.button([event.on_click(on_click), base_class(), primary_class()], [
-    html.text(text),
-  ])
+  html.button([base_class(), primary_class()] |> list.flatten |>
+  s.class,[event.on_click(on_click)], [ html.text(text), ])
 }
 
 fn secondary_class() {
@@ -44,13 +41,11 @@ fn secondary_class() {
     s.hover([s.background("#444")]),
     s.active([s.background("#777")]),
   ]
-  |> scld("button-secondary")
 }
 
 pub fn secondary(on_click on_click: msg, text text: String) -> Element(msg) {
-  html.button([event.on_click(on_click), base_class(), secondary_class()], [
-    html.text(text),
-  ])
+  html.button([base_class(), secondary_class()] |> list.flatten |>
+  s.class,[event.on_click(on_click)], [ html.text(text), ])
 }
 
 fn outlined_class() {
@@ -62,11 +57,9 @@ fn outlined_class() {
     s.hover([s.background("#555")]),
     s.active([s.background("#666")]),
   ]
-  |> scld("button-outlined")
 }
 
 pub fn outlined(on_click on_click: msg, text text: String) -> Element(msg) {
-  html.button([event.on_click(on_click), base_class(), outlined_class()], [
-    html.text(text),
-  ])
+  html.button([base_class(), outlined_class()] |> list.flatten |>
+  s.class,[event.on_click(on_click)], [ html.text(text), ])
 }

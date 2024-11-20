@@ -6,8 +6,8 @@ import blask/unstyled/accordion.{
 import gleam/function
 import gleam/list
 import gleroglero/solid
-import lustre/element.{type Element}
-import lustre/element/html
+import sketch/lustre/element.{type Element}
+import sketch/lustre/element/html
 import sketch as s
 
 pub type AccordionState =
@@ -23,13 +23,13 @@ pub fn accordion(
   on_state_change on_state_change: fn(AccordionState) -> msg,
   items items: List(AccordionItem(msg)),
 ) -> Element(msg) {
-  html.div([accordion_class()], [
+  html.div(accordion_class(), [], [
     unstyled_accordion(
       state: state,
       on_state_change: on_state_change,
       items: list.map(items, convert_item),
-      item_holder: html.div([scl([s.margin_("0.1rem")])], _),
-      separator: html.hr([scl([s.margin_("0")])]),
+      item_holder: html.div(scl([s.margin_("0.1rem")]), [], _),
+      separator: html.hr(scl([s.margin_("0")]), []),
     ),
   ])
 }
@@ -88,31 +88,30 @@ fn icon_class() {
     s.property("stroke", "#eee"),
     s.property("stroke-width", "1px"),
   ]
-  |> scld("styled-accordion-icon")
 }
 
 fn icon_class_anim(open: Bool) {
   case open {
     True ->
       [s.transform("rotate(0.5turn)")]
-      |> scld("styled-accordion-icon-open")
-    False -> [] |> scld("styled-accordion-icon-closed")
+    False -> [] 
   }
 }
 
 fn convert_item(styled_item: AccordionItem(msg)) -> UnstyledAccordionItem(msg) {
-  use open, _body_attrs <- function.identity
+  use open, head_attrs, _body_attrs <- function.identity
   let body_class_anim = case open {
     True -> body_class_open()
     False -> body_class_closed()
   }
   let #(head_text, inner_body) = styled_item
   let head =
-    html.button([head_class()], [
+    html.button(head_class(), head_attrs, [
       html.text(head_text),
-      html.span([icon_class(), icon_class_anim(open)], [solid.chevron_down()]),
+      html.span(icon_class() |> list.append(icon_class_anim(open)) |> s.class,
+      [], [solid.chevron_down() |> element.styled]),
     ])
   let body =
-    html.div([body_class_anim], [html.div([body_class()], [inner_body])])
+    html.div(body_class_anim, [], [html.div(body_class(), [], [inner_body])])
   #(head, body)
 }

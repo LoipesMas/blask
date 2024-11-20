@@ -1,6 +1,7 @@
+import gleam/list
 import blask/internals/utils.{scld}
 import lustre/attribute as a
-import lustre/element/html
+import sketch/lustre/element/html
 import lustre/event
 import sketch as s
 
@@ -19,17 +20,14 @@ fn switch_class() {
     s.cursor("pointer"),
     s.hover([s.important(s.property("--switch-color", "#eee"))]),
   ]
-  |> scld("styled-switch")
 }
 
 fn switch_class_checked() {
   [s.background("#222222"), s.border("2px solid var(--switch-color, #ccc)")]
-  |> scld("styled-switch-checked")
 }
 
 fn switch_class_unchecked() {
   [s.background("#151515"), s.border("2px solid var(--switch-color, #666)")]
-  |> scld("styled-switch-unchecked")
 }
 
 fn span_class() {
@@ -43,12 +41,10 @@ fn span_class() {
       "transform 0.3s cubic-bezier(.45,.43,.15,.86), background 0.15s ease-out",
     ),
   ]
-  |> scld("styled-switch-span")
 }
 
 fn span_class_checked() {
   [s.background("var(--switch-color, #ccc)"), s.transform("translateX(0.5rem)")]
-  |> scld("styled-switch-span-checked")
 }
 
 fn span_class_unchecked() {
@@ -56,7 +52,6 @@ fn span_class_unchecked() {
     s.background("var(--switch-color, #666)"),
     s.transform("translateX(-0.5rem)"),
   ]
-  |> scld("styled-switch-span-unchecked")
 }
 
 pub fn switch(
@@ -73,12 +68,16 @@ pub fn switch(
     False -> span_class_unchecked()
   }
   html.button(
+  [
+
+      switch_class(),
+      switch_class_anim,
+  ] |> list.flatten |> s.class,
+
     [
       event.on_click(state_change(!state)),
       a.id(id),
-      switch_class(),
-      switch_class_anim,
     ],
-    [html.span([span_class(), span_class_anim], [])],
+    [html.span([span_class(), span_class_anim] |> list.flatten |> s.class, [], [])],
   )
 }

@@ -1,7 +1,7 @@
-import blask/internals/utils.{append_attributes, scl, scld, split_pairs}
+import blask/internals/utils.{append_attributes, scl, scld, split_pairs, append_class}
 import gleam/list
-import lustre/element.{type Element}
-import lustre/element/html
+import sketch/lustre/element.{type Element}
+import sketch/lustre/element/html
 import lustre/event
 import sketch as s
 
@@ -14,7 +14,7 @@ pub fn init_state() {
 }
 
 pub type TabsItem(msg) =
-  fn(Bool) -> #(Element(msg), Element(msg))
+  fn(Bool) -> #(List(s.Style), Element(msg), List(s.Style), Element(msg))
 
 pub fn tabs(
   state state: TabsState,
@@ -31,29 +31,22 @@ pub fn tabs(
       view_item(open: open, change_state: change_state(new_state), item: item)
     })
   let #(heads, bodies) = split_pairs(elements)
-  html.div([], [
-    html.div([scl([s.display("flex"), s.flex_direction("row")])], heads),
-    html.div([], bodies),
+  html.div(scl([]),[], [
+    html.div(scl([s.display("flex"), s.flex_direction("row")]), [], heads),
+    html.div(scl([]), [], bodies),
   ])
 }
 
-fn head_class() {
-  [s.flex("1 1")]
-  |> scld("tabs-head")
-}
-
 fn body_class() {
-  [] |> scld("tabs-body")
+  [] 
 }
 
 fn body_class_open() {
   []
-  |> scld("tabs-body-open")
 }
 
 fn body_class_closed() {
   [s.display("none")]
-  |> scld("tabs-body-closed")
 }
 
 fn view_item(
@@ -65,10 +58,12 @@ fn view_item(
     True -> body_class_open()
     False -> body_class_closed()
   }
-  let body_attrs = [body_class(), body_class_animed]
-  let #(head, body) = item(open)
+  let #(head_styles, head, body_styles, body) = item(open)
+  let body_class = [body_class(), body_class_animed, body_styles] |>
+    list.flatten |> s.class
   #(
-    append_attributes(head, [event.on_click(change_state), head_class()]),
-    append_attributes(body, body_attrs),
+    append_attributes(head, [event.on_click(change_state),]) |>
+    append_class(head_styles |> s.class),
+    append_class(body, body_class),
   )
 }

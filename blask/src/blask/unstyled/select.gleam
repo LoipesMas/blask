@@ -1,7 +1,7 @@
 import blask/internals/utils.{scl, scld}
 import gleam/list
-import lustre/element.{type Element}
-import lustre/element/html
+import sketch/lustre/element.{type Element}
+import sketch/lustre/element/html
 import lustre/event
 import sketch as s
 
@@ -27,11 +27,11 @@ pub fn select(
   list_button list_button: fn(option_type) -> Element(msg),
   list list_element: fn(List(Element(msg))) -> Element(msg),
 ) -> Element(msg) {
-  html.div([], [
+  html.div(s.class([]),[], [
     html.div(
+        scl([s.width_("100%")]),
       [
         event.on_click(state_change(SelectState(..state, open: !state.open))),
-        scl([s.width_("100%")]),
       ],
       [main_button(state.current_option)],
     ),
@@ -55,10 +55,11 @@ fn selection_list(
   list_button: fn(option_type) -> Element(msg),
   list_element: fn(List(Element(msg))) -> Element(msg),
 ) -> Element(msg) {
-  html.div([selection_list_class()], [
+  html.div(selection_list_class(), [], [
     list_element(
       list.map(state.options, fn(o) {
         html.div(
+      scl([]),
           [
             event.on_click(state_change(
               SelectState(..state, open: !state.open, current_option: o),
