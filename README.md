@@ -24,6 +24,7 @@ You can see them showcased here: <https://loipesmas.github.io/blask>
 - [x] button
 - [x] input (text, number, file, etc)
 - [ ] combobox
+- [ ] paper
 
 
 ## Links and usage

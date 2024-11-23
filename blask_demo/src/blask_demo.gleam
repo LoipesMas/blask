@@ -1,7 +1,9 @@
 import bg
 import blask/styled/accordion.{type AccordionState, accordion}
 import blask/styled/button
+import blask/styled/tags_input.{type TagsInputState, tags_input}
 import blask/styled/input
+import blask/styled/pill.{simple}
 import blask/styled/select.{type SelectState, select}
 import blask/styled/style
 import blask/styled/switch.{switch}
@@ -13,6 +15,7 @@ import sketch as s
 import sketch/lustre as sketch_lustre
 import sketch/lustre/element
 import sketch/lustre/element/html
+import sketch/size as sz
 
 fn scl(styles) {
   styles |> s.class
@@ -42,6 +45,7 @@ type Model {
     show_lucy: Bool,
     username: String,
     password: String,
+    tags_input_state: TagsInputState,
   )
 }
 
@@ -58,6 +62,7 @@ fn init(_flags) -> Model {
     show_lucy: False,
     username: "",
     password: "",
+    tags_input_state: tags_input.init_state([], ["foo", "bar"]),
   )
 }
 
@@ -68,6 +73,7 @@ type Msg {
   ShowLucyChange(Bool)
   UsernameChange(String)
   PasswordChange(String)
+  TagsInputStateChange(TagsInputState)
   NoOp
 }
 
@@ -81,6 +87,7 @@ fn update(model: Model, msg: Msg) -> Model {
     ShowLucyChange(new_state) -> Model(..model, show_lucy: new_state)
     UsernameChange(username) -> Model(..model, username: username)
     PasswordChange(password) -> Model(..model, password: password)
+    TagsInputStateChange(new_state) -> Model(..model, tags_input_state: new_state)
     NoOp -> model
   }
 }
@@ -96,6 +103,7 @@ fn view(model: Model) -> element.Element(Msg) {
       s.height_("100%"),
       s.max_width_("100vw"),
       s.padding_("0 1em"),
+      s.padding_bottom(sz.em(10.0)),
     ]),
     [],
     [
@@ -251,6 +259,14 @@ fn view(model: Model) -> element.Element(Msg) {
             |> input.build_file(),
         ],
       ),
+      simple("Simple pill"),
+      pill.new()
+        |> pill.with_content(
+          html.div(s.class([s.font_weight("bold")]), [], [html.text("Closable bold pill")]),
+        )
+        |> pill.with_close_button(NoOp)
+        |> pill.build,
+      tags_input(model.tags_input_state, TagsInputStateChange),
     ],
   )
 }
