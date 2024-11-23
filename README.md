@@ -13,6 +13,7 @@ You can see them showcased here: <https://loipesmas.github.io/blask>
 - [x] select
 - [x] accordion
 - [x] tabs
+- [x] input (text, number, file, etc)
 - [ ] combobox
 
 ### Styled
