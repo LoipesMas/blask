@@ -13,6 +13,8 @@ fn pill_styles() {
     s.border_radius_("0.8em"),
     s.width_("fit-content"),
     s.display("flex"),
+    s.font_size_("0.85rem"),
+    s.margin_("auto"),
   ]
 }
 

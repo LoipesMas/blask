@@ -14,6 +14,7 @@ You can see them showcased here: <https://loipesmas.github.io/blask>
 - [x] accordion
 - [x] tabs
 - [x] input (text, number, file, etc)
+- [ ] tags input
 - [ ] combobox
 
 ### Styled
@@ -24,6 +25,7 @@ You can see them showcased here: <https://loipesmas.github.io/blask>
 - [x] switch
 - [x] button
 - [x] input (text, number, file, etc)
+- [x] tags input
 - [ ] combobox
 - [ ] paper
 

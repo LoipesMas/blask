@@ -14,6 +14,7 @@ fn text_class() {
     s.border("1px solid #606060"),
     s.outline("none"),
     s.focus([s.border("1px solid #909092")]),
+    s.height_("1.8rem"),
   ]
 }
 

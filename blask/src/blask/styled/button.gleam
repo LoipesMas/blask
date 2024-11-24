@@ -13,6 +13,8 @@ fn base_class() {
     s.font_family("inherit"),
     s.transition("all 0.1s ease-in-out"),
     s.font_size_("1rem"),
+    s.width_("fit-content"),
+    s.height_("fit-content"),
   ]
 }
 
