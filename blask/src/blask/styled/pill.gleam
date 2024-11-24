@@ -1,6 +1,6 @@
-import lustre/event
+import gleam/option.{type Option, None, Some}
 import gleroglero/solid
-import gleam/option.{type Option, Some, None}
+import lustre/event
 import sketch as s
 import sketch/lustre/element.{type Element}
 import sketch/lustre/element/html
@@ -21,7 +21,7 @@ fn pill_styles() {
 pub type NotClosable =
   Nil
 
-pub type Closable {}
+pub type Closable
 
 pub type NoContent =
   Nil
@@ -56,7 +56,7 @@ pub fn with_close_button(
   props props: PillProps(NotClosable, content, msg),
   on_close on_close: msg,
 ) -> PillProps(Closable, content, msg) {
-  PillProps(on_close: Some(on_close), content:props.content)
+  PillProps(on_close: Some(on_close), content: props.content)
 }
 
 fn close_icon_style() {
@@ -70,9 +70,13 @@ fn close_icon_style() {
     s.cursor("pointer"),
   ]
 }
+
 pub fn build(props: PillProps(closable, Element(msg), msg)) -> Element(msg) {
   let close_button = case props.on_close {
-    Some(msg) -> html.span(s.class(close_icon_style()), [event.on_click(msg)], [solid.x_mark() |> element.styled])
+    Some(msg) ->
+      html.span(s.class(close_icon_style()), [event.on_click(msg)], [
+        solid.x_mark() |> element.styled,
+      ])
     None -> element.none()
   }
   html.div(s.class(pill_styles()), [], [props.content, close_button])

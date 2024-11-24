@@ -26,21 +26,23 @@ pub fn select(
   list_button list_button: fn(option_type) -> Element(msg),
   list list_element: fn(List(Element(msg))) -> Element(msg),
 ) -> Element(msg) {
-  html.div(s.class([]), [
+  html.div(
+    s.class([]),
+    [
       event.on("focusin", fn(_) {
         Ok(state_change(SelectState(..state, open: True)))
       }),
       event.on("focusout", fn(_) {
         Ok(state_change(SelectState(..state, open: False)))
       }),
-  ], [
-    html.div(
-      s.class([s.width_("100%")]),
-      [],
-      [main_button(state.current_option)],
-    ),
-    selection_list(state, state_change, list_button, list_element),
-  ])
+    ],
+    [
+      html.div(s.class([s.width_("100%")]), [], [
+        main_button(state.current_option),
+      ]),
+      selection_list(state, state_change, list_button, list_element),
+    ],
+  )
 }
 
 fn selection_list_class() {
